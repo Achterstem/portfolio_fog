@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ДИНАВАЗРИК</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Oswald:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #070707;          
+            --graphite: #121212;    
+            --grey: #262626;        
+            --green: #0f6;       
+            --text: #d1d1d1;
+            --text-dim: #6b6b6b;
+            --transition: .2s cubic-bezier(.4, 0, .2, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font: 400 1rem/1.6 'JetBrains Mono', monospace;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* САЙДБАР */
+        aside {
+            width: 320px;
+            height: 100vh;
+            position: fixed;
+            top: 0; left: 0;
+            background-color: var(--graphite);
+            border-right: 1px solid var(--grey);
+            display: flex;
+            flex-direction: column;
+            padding: 40px;
+            z-index: 1000;
+        }
+
+        .brand h1 {
+            font: 700 2.5rem 'Oswald', sans-serif;
+            color: #fff;
+            text-transform: uppercase;
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+        .brand span {
+            color: var(--green);
+            font-size: .8rem;
+            letter-spacing: 2px;
+        }
+
+        nav { margin-top: 60px; flex-grow: 1; }
+        nav ul { list-style: none; display: flex; flex-direction: column; gap: 20px; }
+        
+        nav a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font: 400 1.2rem 'Oswald', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+        }
+        nav a::before {
+            content: '>';
+            color: var(--green);
+            margin-right: 15px;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: var(--transition);
+        }
+        nav a:hover, nav a.active-link { color: #fff; }
+        nav a:hover::before, nav a.active-link::before {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* ОСНОВНОЙ КОНТЕНТ */
+        main {
+            margin-left: 320px;
+            width: calc(100% - 320px);
+            padding: 60px 80px;
+        }
+
+        .page { display: none; }
+        .page.active { display: block; }
+
+        .section-title {
+            font: 400 3rem 'Oswald', sans-serif;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--grey);
+            padding-bottom: 10px;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        /* ПРОФИЛЬ */
+        .profile-grid { display: grid; grid-template-columns: 300px 1fr; gap: 40px; align-items: start; }
+        .avatar { width: 100%; aspect-ratio: 1; background: url('avatar.png') center/cover; border: 1px solid var(--grey); }
+        .info-block h2 { font: 400 2rem 'Oswald', sans-serif; color: #fff; margin-bottom: 20px; }
+        .info-block p { margin-bottom: 20px; }
+        
+        .status-badge {
+            display: inline-block;
+            background: #112a11;
+            color: #4eff44;
+            padding: 5px 15px;
+            border: 1px solid #4eff44;
+            font-size: .8rem;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+
+        .social-links { display: flex; gap: 15px; }
+        .social-links a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 1px solid var(--grey);
+            font-size: .9rem;
+            transition: var(--transition);
+            background: var(--graphite);
+        }
+        .social-links a:hover {
+            background: var(--green);
+            color: #000;
+            border-color: var(--green);
+        }
+
+        /* ГАЛЕРЕЯ */
+        .category { margin-bottom: 80px; }
+        .cat-head {
+            font: 400 1.8rem 'Oswald', sans-serif;
+            color: #fff;
+            margin-bottom: 20px;
+            display: inline-block;
+            background: var(--graphite);
+            padding: 5px 20px;
+            border-left: 4px solid var(--green);
+        }
+
+        .price-table {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .price-card {
+            border: 1px solid var(--grey);
+            padding: 15px;
+            background: var(--graphite);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .price-card span { color: var(--text-dim); text-transform: uppercase; font-size: .9rem; }
+        .price-card strong { color: var(--green); font: 700 1.2rem 'Oswald', sans-serif; }
+        
+        .note { color: var(--text-dim); font-size: .85rem; margin-bottom: 30px; }
+        .note span { color: var(--green); }
+
+        /* СЕТКИ */
+        .grid-strict { display: grid; gap: 20px; }
+        .art-card {
+            background: var(--graphite);
+            border: 1px solid var(--grey);
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .art-card img { display: block; width: 100%; height: auto; }
+        .art-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border: 2px solid transparent;
+            transition: var(--transition);
+            pointer-events: none;
+        }
+        .art-card:hover::after { border: 1px solid var(--grey); }
+
+        #grid-illustration { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+        #grid-illustration .art-card { height: 300px; }
+        #grid-illustration .art-card img { width: 100%; height: 100%; object-fit: cover; }
+
+        #grid-sketcha { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+        #grid-sketcha .art-card { height: 300px; }
+        #grid-sketcha .art-card img { width: 100%; height: 100%; object-fit: cover; }
+
+        #grid-sketchb { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+        #grid-sketchb .art-card { height: 300px; }
+        #grid-sketchb .art-card img { width: 100%; height: 100%; object-fit: cover; }
+
+        #grid-items .art-card { width: 70px; height: 70px; }
+        #grid-costumes .art-card { width: 200px; height: 300px; }
+        #grid-backgrounds .art-card { display: inline-block; width: 100%; height: auto; }
+
+        /* ТОС */
+        .rule-list { display: flex; flex-direction: column; gap: 15px; }
+        .rule-item { display: flex; background: var(--graphite); border: 1px solid var(--grey); padding: 20px; }
+        .rule-num {
+            color: var(--green);
+            font: 400 1.5rem 'Oswald', sans-serif;
+            width: 60px;
+            flex-shrink: 0;
+        }
+        .rule-text { color: var(--text); font-size: 1rem; line-height: 1.5; }
+
+        /* АДАПТИВНОСТЬ */
+        @media (max-width: 1000px) {
+            body { flex-direction: column; }
+            aside {
+                width: 100%; height: auto; position: relative;
+                flex-direction: row; justify-content: space-between; align-items: center;
+                padding: 20px 40px; border-right: none; border-bottom: 1px solid var(--grey);
+            }
+            nav { margin-top: 0; }
+            nav ul { flex-direction: row; gap: 30px; }
+            main { margin-left: 0; width: 100%; padding: 40px; }
+            .profile-grid { grid-template-columns: 1fr; }
+            .avatar { max-width: 300px; }
+        }
+
+        @media (max-width: 600px) {
+            aside { flex-direction: column; align-items: flex-start; gap: 20px; padding: 20px; }
+            nav ul { flex-wrap: wrap; gap: 15px; }
+            main { padding: 20px; }
+            .section-title { font-size: 2rem; flex-direction: column; align-items: flex-start; gap: 10px; }
+            .section-title::after { display: none; }
+            .grid-strict { grid-template-columns: 1fr !important; }
+            #grid-items .art-card, #grid-costumes .art-card, #grid-backgrounds .art-card { width: 100%; height: auto; }
+            .rule-item { flex-direction: column; gap: 10px; }
+        }
+
+        /* ЛАЙТБОКС */
+        #lightbox {
+            position: fixed; inset: 0;
+            background: rgba(0, 0, 0, .95);
+            display: none; justify-content: center; align-items: center;
+            z-index: 2000; cursor: pointer;
+        }
+        #lightbox img { max-width: 90%; max-height: 90%; border: 2px solid var(--green); }
+    </style>
+</head>
+<body>
+
+    <aside>
+        <div class="brand">
+            <h1>PORTFOLIO</h1>
+            <span>ID: 1180865</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a onclick="showPage('about')" id="link-about">Profile</a></li>
+                <li><a onclick="showPage('gallery')" id="link-gallery">Gallery</a></li>
+                <li><a onclick="showPage('tos')" id="link-tos">TOS</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <div id="lightbox" onclick="closeLightbox()">
+        <img id="lightbox-img" src="" alt="">
+    </div>
+
+    <main>
+        <section id="about" class="page active">
+            <div class="section-title">Profile</div>
+            <div class="profile-grid">
+                <div class="avatar"></div>
+                <div class="info-block">
+                    <h2>August Fog</h2>
+                    <div class="status-badge">Commissions: open</div>
+                    <p>info info info info</p>
+                    <p style="color: var(--text-dim); font-size: .85rem;">LAST UPDATE: 16.05.2026</p>
+                    
+                    <div class="social-links">
+                        <a href="https://vk.com/pirate_7">[ VKONTAKTE ]</a>
+                        <a href="#">[ GROUP ]</a>
+                        <a href="https://catwar.su/cat1180865">[ CATWAR ]</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="gallery" class="page">
+            <div class="section-title">Gallery</div>
+            
+            <div class="category">
+                <div class="cat-head">ПОЛНОЦЕННАЯ РАБОТА</div>
+                <div class="price-table">
+                    <div class="price-card"><span>Портрет</span><strong>1000+ руб</strong></div>
+                    <div class="price-card"><span>По пояс</span><strong>1500+ руб</strong></div>
+                    <div class="price-card"><span>Полный рост</span><strong>2300+ руб</strong></div>
+                </div>
+                <p class="note"><span>></span> Референсы делаю только обговорив все детали, цена складывает из расценок выше.</p>
+                <p class="note"><span>></span> Второй+ персонаж 100% оплата.</p>
+                <div id="grid-illustration" class="grid-strict"></div>
+            </div>
+
+            <div class="category">
+                <div class="cat-head">СКЕТЧ упрощённый / аккуратный</div>
+                <div class="price-table">
+                    <div class="price-card"><span>Портрет</span><strong>250+/500+ руб</strong></div>
+                    <div class="price-card"><span>По пояс</span><strong>450+/700+ руб</strong></div>
+                    <div class="price-card"><span>Полный рост</span><strong>600+/900+ руб</strong></div>
+                </div>
+                <p class="note"><span>></span> Фон только заливка.</p>
+                <p>УПРОЩЁННЫЙ СКЕТЧ</p>
+                <div id="grid-sketcha" class="grid-strict"></div>
+                <p style="margin-top: 30px;">АККУРАТНЫЙ СКЕТЧ</p>
+                <div id="grid-sketchb" class="grid-strict"></div>
+            </div>
+
+            <div class="category">
+                <div class="cat-head">ПРЕДМЕТЫ</div>
+                <div class="price-table">
+                    <div class="price-card"><span>Head</span><strong>300+ руб</strong></div>
+                </div>
+                <p class="note"><span>></span> ...</p>
+                <div id="grid-items" class="grid-strict" style="grid-template-columns: repeat(auto-fill, 70px);"></div>
+            </div>
+
+            <div class="category">
+                <div class="cat-head">COSTUMES</div>
+                <div class="price-table">
+                    <div class="price-card"><span>Head</span><strong>CLOSED</strong></div>
+                    <div class="price-card"><span>Half body</span><strong>CLOSED</strong></div>
+                    <div class="price-card"><span>Full body</span><strong>CLOSED</strong></div>
+                </div>
+                <p class="note"><span>></span> ...</p>
+                <div id="grid-costumes" class="grid-strict" style="grid-template-columns: repeat(auto-fill, 200px);"></div>
+            </div>
+
+            <div class="category">
+                <div class="cat-head">ФОНЫ</div>
+                <div class="price-table">
+                    <div class="price-card"><span>Природный</span><strong>1700+ руб</strong></div>
+                    <div class="price-card"><span>Архитектурный</span><strong>2500+ руб</strong></div>
+                </div>
+                <p class="note"><span>></span> Сложность фона так же влияет на его стоимость.</p>
+                <div id="grid-backgrounds" class="grid-strict" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));"></div>
+            </div>
+        </section>
+
+        <section id="tos" class="page">
+            <div class="section-title">Terms of Service</div>
+            <div class="rule-list">
+                <div class="rule-item">
+                    <div class="rule-num">01</div>
+                    <div class="rule-text">Способ оплаты: сбербанк, Т-Банк, УБРиР.</div>
+                </div>
+                <div class="rule-item">
+                    <div class="rule-num">02</div>
+                    <div class="rule-text">Работаю без дедлайна или договорный.</div>
+                </div>
+                <div class="rule-item">
+                    <div class="rule-num">03</div>
+                    <div class="rule-text">Сейчас все новые заказы начну выполнять с августа.
+Сразу уточняйте личный или Соник стиль.</div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const lb = document.getElementById('lightbox'), lbImg = document.getElementById('lightbox-img');
+
+        function showPage(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.id === id));
+            document.querySelectorAll('nav a').forEach(a => a.classList.toggle('active-link', a.id === `link-${id}`));
+            window.scrollTo(0,0);
+        }
+
+        const openLightbox = src => { lbImg.src = src; lb.style.display = 'flex'; };
+        const closeLightbox = () => lb.style.display = 'none';
+
+        const galleryData = {
+            illustration: Array.from({length: 1}, (_, i) => `illustration${i+1}.png`),
+            sketcha: Array.from({length: 1}, (_, i) => `sketcha${i+1}.png`),
+            sketchb: Array.from({length: 1}, (_, i) => `sketchb${i+1}.png`),
+            costumes: Array.from({length: 9}, (_, i) => `costume${i+1}.png`),
+            items: Array.from({length: 14}, (_, i) => `item${i+1}.png`),
+            backgrounds: Array.from({length: 1}, (_, i) => `back${i+1}.jpg`)
+        };
+
+        const renderGrid = (id, imgs) => {
+            const el = document.getElementById(id);
+            if (el) el.innerHTML = imgs.map(src => `<div class="art-card"><img src="${src}" onclick="openLightbox('${src}')" alt=""></div>`).join('');
+        };
+
+        renderGrid('grid-illustration', galleryData.illustration);
+        renderGrid('grid-sketcha', galleryData.sketcha);
+        renderGrid('grid-sketchb', galleryData.sketchb);
+        renderGrid('grid-costumes', galleryData.costumes);
+        renderGrid('grid-items', galleryData.items);
+        renderGrid('grid-backgrounds', galleryData.backgrounds);
+
+        document.getElementById('link-about').classList.add('active-link');
+    </script>
+</body>
+</html>
