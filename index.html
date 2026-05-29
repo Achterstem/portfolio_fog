@@ -16,7 +16,7 @@
             --text-dim: #6b6b6b;
             --transition: .2s cubic-bezier(.4, 0, .2, 1);
         }
-i
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
@@ -82,7 +82,7 @@ i
             transform: translateX(0);
         }
 
-        /* ОСНОВНОЙ КОНТЕНТ */
+        /* ОСНОВНОЙ */
         main {
             margin-left: 320px;
             width: calc(100% - 320px);
@@ -121,7 +121,7 @@ i
             text-transform: uppercase;
         }
 
-        .social-links { display: flex; gap: 15px; }
+        .social-links { display: flex; flex-wrap: wrap; gap: 15px; }
         .social-links a {
             color: #fff;
             text-decoration: none;
@@ -130,6 +130,7 @@ i
             font-size: .9rem;
             transition: var(--transition);
             background: var(--graphite);
+            text-align: center;
         }
         .social-links a:hover {
             background: var(--green);
@@ -162,9 +163,10 @@ i
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 10px;
         }
         .price-card span { color: var(--text-dim); text-transform: uppercase; font-size: .9rem; }
-        .price-card strong { color: var(--green); font: 700 1.2rem 'Oswald', sans-serif; }
+        .price-card strong { color: var(--green); font: 700 1.2rem 'Oswald', sans-serif; white-space: nowrap; }
         
         .note { color: var(--text-dim); font-size: .85rem; margin-bottom: 30px; }
         .note span { color: var(--green); }
@@ -179,6 +181,7 @@ i
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
         }
         .art-card img { display: block; width: 100%; height: auto; }
         .art-card::after {
@@ -203,8 +206,14 @@ i
         #grid-sketchb .art-card { height: 300px; }
         #grid-sketchb .art-card img { width: 100%; height: 100%; object-fit: cover; }
 
+        #grid-items { justify-content: center; }
         #grid-items .art-card { width: 70px; height: 70px; }
+        #grid-items .art-card img { width: 100%; height: 100%; object-fit: cover; }
+        
+        #grid-costumes { justify-content: center; }
         #grid-costumes .art-card { width: 200px; height: 300px; }
+        #grid-costumes .art-card img { width: 100%; height: 100%; object-fit: cover; }
+        
         #grid-backgrounds .art-card { display: inline-block; width: 100%; height: auto; }
 
         /* ТОС */
@@ -218,7 +227,7 @@ i
         }
         .rule-text { color: var(--text); font-size: 1rem; line-height: 1.5; }
 
-        /* АДАПТИВНОСТЬ */
+        /* АДАПТИВКА */
         @media (max-width: 1000px) {
             body { flex-direction: column; }
             aside {
@@ -229,29 +238,46 @@ i
             nav { margin-top: 0; }
             nav ul { flex-direction: row; gap: 30px; }
             main { margin-left: 0; width: 100%; padding: 40px; }
-            .profile-grid { grid-template-columns: 1fr; }
+            .profile-grid { grid-template-columns: 1fr; justify-items: center; text-align: center; }
             .avatar { max-width: 300px; }
+            .status-badge { display: inline-block; margin-left: auto; margin-right: auto; }
+            .social-links { justify-content: center; }
         }
 
         @media (max-width: 600px) {
-            aside { flex-direction: column; align-items: flex-start; gap: 20px; padding: 20px; }
-            nav ul { flex-wrap: wrap; gap: 15px; }
-            main { padding: 20px; }
-            .section-title { font-size: 2rem; flex-direction: column; align-items: flex-start; gap: 10px; }
-            .section-title::after { display: none; }
-            .grid-strict { grid-template-columns: 1fr !important; }
-            #grid-items .art-card, #grid-costumes .art-card, #grid-backgrounds .art-card { width: 100%; height: auto; }
-            .rule-item { flex-direction: column; gap: 10px; }
+            aside { flex-direction: column; align-items: center; gap: 20px; padding: 20px 15px; }
+            .brand { text-align: center; }
+            nav ul { flex-wrap: wrap; justify-content: center; gap: 15px 25px; }
+            nav a::before { margin-right: 8px; }
+            main { padding: 30px 15px; }
+            .section-title { font-size: 2.2rem; flex-direction: column; align-items: flex-start; gap: 10px; margin-bottom: 30px; }
+            
+            #grid-illustration { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+            #grid-illustration .art-card { height: 180px; }
+            
+            #grid-sketcha { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+            #grid-sketcha .art-card { height: 180px; }
+            
+            #grid-sketchb { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+            #grid-sketchb .art-card { height: 180px; }
+
+            #grid-items { grid-template-columns: repeat(auto-fill, 70px); gap: 10px; }
+            #grid-costumes { grid-template-columns: repeat(auto-fill, 140px); gap: 10px; }
+            #grid-costumes .art-card { height: 210px; }
+
+            .price-table { grid-template-columns: 1fr; gap: 10px; }
+            .price-card { padding: 12px; }
+            .rule-item { flex-direction: column; gap: 10px; padding: 15px; }
+            .rule-num { width: auto; }
         }
 
-        /* ЛАЙТБОКС */
         #lightbox {
             position: fixed; inset: 0;
             background: rgba(0, 0, 0, .95);
             display: none; justify-content: center; align-items: center;
             z-index: 2000; cursor: pointer;
         }
-        #lightbox img { max-width: 90%; max-height: 90%; border: 2px solid var(--green); }
+        #lightbox img { max-width: 95%; max-height: 95%; border: 2px solid var(--green); object-fit: contain; }
     </style>
 </head>
 <body>
@@ -282,7 +308,7 @@ i
                 <div class="info-block">
                     <h2>August Fog</h2>
                     <div class="status-badge">Commissions: open</div>
-                    <p>Люблю динозавров.</p>
+                    <p>info info info info</p>
                     <p style="color: var(--text-dim); font-size: .85rem;">LAST UPDATE: 16.05.2026</p>
                     
                     <div class="social-links">
@@ -317,9 +343,9 @@ i
                     <div class="price-card"><span>Полный рост</span><strong>600+/900+ руб</strong></div>
                 </div>
                 <p class="note"><span>></span> Фон только заливка.</p>
-                <p>УПРОЩЁННЫЙ СКЕТЧ</p>
+                <p style="margin-bottom: 15px; font-weight: bold; font-size: 0.9rem; letter-spacing: 1px;">УПРОЩЁННЫЙ СКЕТЧ</p>
                 <div id="grid-sketcha" class="grid-strict"></div>
-                <p style="margin-top: 30px;">АККУРАТНЫЙ СКЕТЧ</p>
+                <p style="margin-top: 30px; margin-bottom: 15px; font-weight: bold; font-size: 0.9rem; letter-spacing: 1px;">АККУРАТНЫЙ СКЕТЧ</p>
                 <div id="grid-sketchb" class="grid-strict"></div>
             </div>
 
@@ -367,10 +393,8 @@ i
                 </div>
                 <div class="rule-item">
                     <div class="rule-num">03</div>
-                    <div class="rule-text">Сейчас все новые заказы начну выполнять с августа.
-Сразу уточняйте личный или Соник стиль.</div>
+                    <div class="rule-text">Сейчас все новые заказы начну выполнять с августа. Сразу уточняйте личный или Соник стиль.</div>
                 </div>
-
             </div>
         </section>
     </main>
@@ -389,7 +413,7 @@ i
 
         const galleryData = {
             illustration: Array.from({length: 1}, (_, i) => `illustration${i+1}.png`),
-            sketcha: Array.from({length: 2}, (_, i) => `sketcha${i+1}.png`),
+            sketcha: Array.from({length: 1}, (_, i) => `sketcha${i+1}.png`),
             sketchb: Array.from({length: 1}, (_, i) => `sketchb${i+1}.png`),
             costumes: Array.from({length: 9}, (_, i) => `costume${i+1}.png`),
             items: Array.from({length: 14}, (_, i) => `item${i+1}.png`),
