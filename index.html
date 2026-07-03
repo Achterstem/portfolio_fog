@@ -355,6 +355,17 @@
             </div>
 
             <div class="category">
+                <div class="cat-head">ЧИБИ</div>
+                <div class="price-table">
+                    <div class="price-card"><span>Полноценка</span><strong>1000 руб</strong></div>
+                    <div class="price-card"><span>Скетч</span><strong>600 руб</strong></div>
+                </div>
+                <p class="note"><span>></span> Только полнорост без фона или заливка.</p>
+                <p class="note"><span>></span> Второй+ персонаж 100% оплата.</p>
+                <div id="grid-chibi" class="grid-strict"></div>
+            </div>
+
+            <div class="category">
                 <div class="cat-head">ПРЕДМЕТЫ</div>
                 <div class="price-table">
                     <div class="price-card"><span>Штука</span><strong>300+ руб</strong></div>
@@ -421,6 +432,7 @@
             illustration: Array.from({length: 1}, (_, i) => `illustration${i+1}.png`),
             sketcha: Array.from({length: 2}, (_, i) => `sketcha${i+1}.png`),
             sketchb: Array.from({length: 2}, (_, i) => `sketchb${i+1}.png`),
+            chibi: Array.from({length: 1}, (_, i) => `chibi${i+1}.png`),
             costumes: Array.from({length: 9}, (_, i) => `costume${i+1}.png`),
             items: Array.from({length: 23}, (_, i) => `item${i+1}.png`),
             backgrounds: Array.from({length: 1}, (_, i) => `back${i+1}.jpg`)
@@ -434,6 +446,7 @@
         renderGrid('grid-illustration', galleryData.illustration);
         renderGrid('grid-sketcha', galleryData.sketcha);
         renderGrid('grid-sketchb', galleryData.sketchb);
+        renderGrid('grid-chibi', galleryData.chibi);
         renderGrid('grid-costumes', galleryData.costumes);
         renderGrid('grid-items', galleryData.items);
         renderGrid('grid-backgrounds', galleryData.backgrounds);
